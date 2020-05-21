@@ -10,4 +10,6 @@ export class Account {
 	transactionDate: string;
 	creationDate: string;
 	beneficiaries: Array<Beneficiary>;
+	firstName : string;
+	lastName: string;
 }

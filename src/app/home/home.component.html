@@ -1,5 +1,6 @@
 <h1>Hi {{currentUser.firstName}}!</h1>
 <p>You're logged in with Banking Application</p>
+
 <h3>Show Account Details</h3>
 <table class="table table-hover">
     <thead>
@@ -11,8 +12,8 @@
       <th>debit</th> 
       <th>transaction date</th>          
     </thead>
-    <tbody *ngFor="let account of accounts">
-      <tr>
+    <tbody>
+      <tr *ngFor="let account of this.accounts">
         <td>{{account.id}}</td>
         <td>{{account.type}}</td>
         <td>{{account.balance}}</td>
@@ -23,19 +24,21 @@
       </tr>
     </tbody>
   </table>
-  <h3>Beneficiary Details</h3>
+  <p><a [routerLink]="['/account']">Add Account</a></p>
+<h3>Show Beneficiary Details</h3>
 <table class="table table-hover">
     <thead>
       <th>beneficiary id</th>
       <th>beneficiary account Id</th>
       <th>beneficiary name</th>      
     </thead>
-    <tbody *ngFor="let account of accounts">
+    <tbody *ngFor="let account of this.accounts">
       <tr *ngFor="let beneficiary of account.beneficiaries">
         <td>{{beneficiary.id}}</td>
         <td>{{beneficiary.beneficiaryId}}</td>
-        <td>{{beneficiary.userId}}</td>       
+        <td>{{this.firstName}} {{this.lastName}}</td>       
       </tr>
     </tbody>
   </table>
+  <p><a [routerLink]="['/beneficiary']">Add Beneficiary</a></p>
 <p><a [routerLink]="['/login']">Logout</a></p>

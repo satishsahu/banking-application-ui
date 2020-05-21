@@ -5,6 +5,6 @@ export class Beneficiary {
 	account: Account;
 	userId: number;
 	beneficiaryId: number;
-	beneficiaryFirstName: string;
-	beneficiaryLastName: string
+    firstName: string;
+    lastName: string;
 }

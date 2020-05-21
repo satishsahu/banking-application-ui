@@ -6,26 +6,25 @@ import { Account } from '../_models/account';
 import { UserService } from '../_services';
 import { AccountService } from '../_services/account.service';
 import { ModalService } from '../_services/modal.service';
+import { Beneficiary } from '../_models/Beneficiary';
 
 @Component({templateUrl: 'home.component.html'})
 export class HomeComponent implements OnInit {
     currentUser: User;
     users: User[] = [];
     accounts: Account[] = [];
-    beneficiaryUser: {
-        id: number;
-        userName: string;
-        password: string;
-        firstName: string;
-        lastName: string;
-    };
+    account: Account;
+    beneficiary: Beneficiary;
+    beneficiaries: Beneficiary[] = [];
+    firstName: string = "";
+    lastName:string = "";
 
     constructor(private userService: UserService, private accountService: AccountService) {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     }
 
     ngOnInit() {
-        this.loadAllUsers();
+        // this.loadAllUsers();
         this.loadAccountsForUsers(this.currentUser.id);
     }
 
@@ -35,6 +34,16 @@ export class HomeComponent implements OnInit {
     //     });
     // }
     onTransfer(sid: number, did: number, amount:number) {
+        this.accountService.transferAmount(sid, did, amount).pipe(first()).subscribe(accounts => {
+            console.log(JSON.stringify(accounts)) 
+            // this.accounts.forEach(account => {
+            //     account.beneficiaries.forEach(beneficiary => {
+            //         this.getUsersById(beneficiary.userId);
+            //         // beneficiary.beneficiaryFirstName = this.beneficiaryUser.firstName;
+            //         // beneficiary.beneficiaryLastName = this.beneficiaryUser.lastName
+            //     });
+            // });
+        });
     }
     private loadAllUsers() {
         this.userService.getAll().pipe(first()).subscribe(users => {
@@ -46,20 +55,31 @@ export class HomeComponent implements OnInit {
     private getUsersById(userId: number) {
         this.userService.getById(userId).pipe(first()).subscribe(user => {
             console.log(JSON.stringify(user));
-            // this.beneficiaryUser.firstName=user.firstName;
-            // this.beneficiaryUser.lastName=user.lastName;
+            this.firstName=user.firstName;
+            this.lastName=user.lastName;
         });
     }
 
+    private setBeneficiary(beneficiaries: Beneficiary[]){
+        this.account.beneficiaries = beneficiaries;
+    }
     private loadAccountsForUsers(userId: number) {
         this.accountService.getAccountsForUsers(userId).pipe(first()).subscribe(accounts => {
-            console.log(JSON.stringify(accounts)) 
-            this.accounts.forEach(account => {
+            console.log(JSON.stringify(accounts));
+            this.accounts = accounts; 
+            accounts.forEach(account => {
+                this.account = account;
                 account.beneficiaries.forEach(beneficiary => {
                     this.getUsersById(beneficiary.userId);
-                    // beneficiary.beneficiaryFirstName = this.beneficiaryUser.firstName;
-                    // beneficiary.beneficiaryLastName = this.beneficiaryUser.lastName
+                    beneficiary.firstName = this.firstName;
+                    beneficiary.lastName = this.lastName
+                    this.beneficiary = beneficiary;
+                    this.beneficiaries.push(this.beneficiary);
+                    this.account.beneficiaries = this.beneficiaries;
+                    //this.setBeneficiary(this.beneficiaries);
                 });
+                this.accounts = [];
+                this.accounts.push(this.account); 
             });
         });
     }

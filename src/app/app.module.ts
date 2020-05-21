@@ -16,6 +16,7 @@ import { AlertService, AuthenticationService, UserService } from './_services';
 import { HomeComponent } from './home';
 import { LoginComponent } from './login';
 import { RegisterComponent } from './register';
+
 import { MatDatepickerModule,
     MatNativeDateModule,
     MatFormFieldModule,
@@ -24,6 +25,9 @@ import { AccountService } from './_services/account.service';
 import { ModalComponent } from './home/modal.component';
 import { ModalService } from './_services/modal.service';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { AccountComponent } from './account';
+import { BeneficiaryComponent } from './beneficiary/beneficiary.component';
+// import { BeneficiaryComponent } from './beneficiary';
 
 @NgModule({
     imports: [
@@ -43,7 +47,9 @@ import { MatSidenavModule } from '@angular/material/sidenav';
         HomeComponent,
         LoginComponent,
         RegisterComponent,
-        ModalComponent
+        ModalComponent,
+        AccountComponent,
+        BeneficiaryComponent
     ],
     providers: [
         AuthGuard,
